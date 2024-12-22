@@ -108,7 +108,7 @@ public struct PackageBuild: Sendable {
     public let countSinceTag: Int  // Commit count since tag
     public let branch: String?     // Git branch name
     public let digest: [UInt8]     // Latest commit sha1 digest (20 bytes)
-    public let moduleName: String  // Target name
+    public let moduleName: String  // Module name
 
     public var commit: String {
         digest.reduce(\"\") { \$0 + String(format: \"%02x\", \$1) }
