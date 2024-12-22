@@ -17,7 +17,7 @@ struct PackageBuildInfoPlugin: BuildToolPlugin {
                 "Generating \(outputFile.lastComponent) for \(target.directory)",
             executable:
                 try context.tool(named: "PackageBuildInfo").path,
-            arguments: [ "\(target.directory)", "\(outputFile)" ],
+            arguments: [ "\(target.directory)", "\(outputFile)", target.moduleName ],
             outputFilesDirectory: context.pluginWorkDirectory
         )
         return [command]
