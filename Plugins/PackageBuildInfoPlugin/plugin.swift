@@ -34,7 +34,7 @@ extension PackageBuildInfoPlugin: XcodeBuildToolPlugin {
                 "Generating \(outputFile.lastComponent) for \(context.xcodeProject.directory)",
             executable:
                 try context.tool(named: "PackageBuildInfo").path,
-            arguments: [ "\(context.xcodeProject.directory)", "\(outputFile)" ],
+            arguments: [ "\(context.xcodeProject.directory)", "\(outputFile)", target.displayName ],
             outputFilesDirectory: context.pluginWorkDirectory
         )
         return [command]

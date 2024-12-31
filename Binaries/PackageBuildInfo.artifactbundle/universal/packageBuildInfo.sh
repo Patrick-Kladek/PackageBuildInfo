@@ -83,7 +83,7 @@ countSinceTag="0"
 tag="nil"
 digest=""
 digestS="[]"
-moduleName="$3"
+moduleName=\"$3\"
 
 TZO=$(date +%z)
 TZSIGN=${TZO:0:1}1
