@@ -123,4 +123,26 @@ public struct PackageBuild: Sendable {
                               branch: $branch,
                               digest: $digestS,
                               moduleName: $moduleName)
+
+    var describe: String {
+        guard self.digest.isEmpty == false else {
+            return \"unknown\"
+        }
+
+        guard let tag = self.tag else {
+            return String(self.commit.prefix(8))
+        }
+
+        var desc = tag
+
+        if self.countSinceTag != 0 {
+            desc += \"-\(self.countSinceTag)-g\(self.commit.prefix(7))\"
+        }
+
+        if self.isDirty == true {
+            desc += \"-dirty\"
+        }
+
+        return desc
+    }
 }" >"$2"
