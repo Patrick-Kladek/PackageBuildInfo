@@ -100,29 +100,31 @@ echo "/////
 import Foundation
 
 public struct PackageBuild: Sendable {
-    public let isDirty: Bool       // Dirty build - git directory isn't clean.
-    public let timeStamp: Date     // Time of last commit
-    public let timeZone: TimeZone  // Time Zone
-    public let count: Int          // Total commit count
-    public let tag: String?        // Tag, if exists
-    public let countSinceTag: Int  // Commit count since tag
-    public let branch: String?     // Git branch name
-    public let digest: [UInt8]     // Latest commit sha1 digest (20 bytes)
-    public let moduleName: String  // Module name
+    public let hasUncommitedChanges: Bool   // Dirty build - git directory isn't clean.
+    public let timeStamp: Date              // Time of last commit
+    public let timeZone: TimeZone           // Time Zone
+    public let count: Int                   // Total commit count
+    public let tag: String?                 // Tag, if exists
+    public let countSinceTag: Int           // Commit count since tag
+    public let branch: String?              // Git branch name
+    public let digest: [UInt8]              // Latest commit sha1 digest (20 bytes)
+    public let moduleName: String           // Module name
 
     public var commit: String {
         digest.reduce(\"\") { \$0 + String(format: \"%02x\", \$1) }
     }
+    
     public static let info = PackageBuild(
-                              isDirty: $isDirty,
-                              timeStamp: Date(timeIntervalSince1970: $date),
-                              timeZone: TimeZone(secondsFromGMT: $timeZone) ?? TimeZone.current,
-                              count: $count,
-                              tag: $tag,
-                              countSinceTag: $countSinceTag,
-                              branch: $branch,
-                              digest: $digestS,
-                              moduleName: $moduleName)
+        hasUncommitedChanges: $isDirty,
+        timeStamp: Date(timeIntervalSince1970: $date),
+        timeZone: TimeZone(secondsFromGMT: $timeZone) ?? TimeZone.current,
+        count: $count,
+        tag: $tag,
+        countSinceTag: $countSinceTag,
+        branch: $branch,
+        digest: $digestS,
+        moduleName: $moduleName
+    )
 
     var describe: String {
         guard self.digest.isEmpty == false else {
@@ -139,7 +141,7 @@ public struct PackageBuild: Sendable {
             desc += \"-\(self.countSinceTag)-g\(self.commit.prefix(7))\"
         }
 
-        if self.isDirty == true {
+        if self.hasUncommitedChanges == true {
             desc += \"-dirty\"
         }
 
