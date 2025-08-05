@@ -141,10 +141,6 @@ public struct PackageBuild: Sendable {
             desc += \"-\(self.countSinceTag)-g\(self.commit.prefix(7))\"
         }
 
-        if self.hasUncommitedChanges == true {
-            desc += \"-dirty\"
-        }
-
         return desc
     }
 }" >"$2"
