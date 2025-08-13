@@ -11,6 +11,8 @@ if [[ $# != 3 ]]; then
     exit 1
 fi
 
+echo "Starting Package Plugin ..."
+
 gitDirectory=$1
 cd "$gitDirectory" || exit 2
 
@@ -38,6 +40,9 @@ function getGitInfo() {
     fi
     if [[ ${#output} == 0 ]]; then
         isDirty="false"
+    else
+        echo "isDirty check failed: " ${output}
+        isDirty=${output}
     fi
 
     runGit "git describe --tags --abbrev=0"
