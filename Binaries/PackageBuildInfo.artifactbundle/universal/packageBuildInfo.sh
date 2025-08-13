@@ -147,4 +147,8 @@ public struct PackageBuild: Sendable {
 
         return desc
     }
+    
+    static func _file() -> String {
+        return #file
+    }
 }" >"$2"
