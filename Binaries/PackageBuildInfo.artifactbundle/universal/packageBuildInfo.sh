@@ -40,9 +40,6 @@ function getGitInfo() {
     fi
     if [[ ${#output} == 0 ]]; then
         isDirty="false"
-    else
-        echo "isDirty check failed: " ${output}
-        isDirty=${output}
     fi
 
     runGit "git describe --tags --abbrev=0"

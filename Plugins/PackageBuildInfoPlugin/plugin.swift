@@ -10,8 +10,8 @@ import Foundation
 struct PackageBuildInfoPlugin: BuildToolPlugin {
     func createBuildCommands(context: PluginContext, target: Target) throws -> [Command] {
         guard let target = target as? SourceModuleTarget else { return [] }
-        let outputFile = context.pluginWorkDirectory.appending("PackageBuild.swift")
 
+        let outputFile = context.pluginWorkDirectory.appending("PackageBuild.swift")
         let command: Command = .buildCommand(
             displayName: "Generating \(outputFile.lastComponent) for \(target.directory)",
             executable: try context.tool(named: "PackageBuildInfo").path,
@@ -26,15 +26,6 @@ struct PackageBuildInfoPlugin: BuildToolPlugin {
             ]
         )
 
-
-//        prebuildCommand(
-//            displayName:
-//                "Generating \(outputFile.lastComponent) for \(target.directory)",
-//            executable:
-//                try context.tool(named: "PackageBuildInfo").path,
-//            arguments: [ "\(target.directory)", "\(outputFile)", target.moduleName ],
-//            outputFilesDirectory: context.pluginWorkDirectory
-//        )
         return [command]
     }
 }
@@ -48,25 +39,19 @@ extension PackageBuildInfoPlugin: XcodeBuildToolPlugin {
     func createBuildCommands(context: XcodeProjectPlugin.XcodePluginContext, target: XcodeProjectPlugin.XcodeTarget) throws -> [PackagePlugin.Command] {
         let outputFile = context.pluginWorkDirectory.appending("PackageBuild.swift")
 
-        let command: Command = .prebuildCommand(
+        let command: Command = .buildCommand(
             displayName: "Generating \(outputFile.lastComponent) for \(context.xcodeProject.directory)",
             executable: try context.tool(named: "PackageBuildInfo").path,
-            arguments: [ "\(context.xcodeProject.directory)", "\(outputFile)", target.displayName ],
-            outputFilesDirectory: context.pluginWorkDirectory
+            arguments: [
+                "\(context.xcodeProject.directory)", "\(outputFile)", target.displayName
+            ],
+            inputFiles: [
+                context.xcodeProject.directory.appending(".git")
+            ],
+            outputFiles: [
+                outputFile
+            ]
         )
-
-//        .buildCommand(
-//            displayName: "Generating \(outputFile.lastComponent) for \(context.xcodeProject.directory)",
-//            executable: try context.tool(named: "PackageBuildInfo").path,
-//            arguments: [
-//                "\(context.xcodeProject.directory)", "\(outputFile)", target.displayName
-//            ],
-//            inputFiles: [
-//                context.xcodeProject.directory
-//            ],
-//            outputFiles: [
-//                outputFile
-//            ])
 
         return [command]
     }
